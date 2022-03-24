@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css';
 
 function HeroBanner(props) {
@@ -25,8 +25,34 @@ function Testimonial(props) {
 }
 
 export default function App() {
+  const [page, updatePage] = useState();
+
+  useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      'Cookie',
+      'visid_incap_673446=JIu0hRx+Rfi+fOWgJKbyEYuV7GAAAAAAQUIPAAAAAABaYy/nF3HjcNhFM5WHhAvu'
+    );
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(
+      'https://cdn.contentful.com/spaces/op2qgzceam5o/environments/master/entries/7dsNMZBD0EgwXJnyQROkCW?access_token=WIC1KuiU0qnu7OoomLJ1hTi40Pdl5PLqMaeqlQZG03U',
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => updatePage(result))
+      .catch((error) => console.log('error', error));
+  });
+
   return (
-    <div>
+    <div>   
+      {page && <p>{page.fields.slug}</p>}
+
       <HeroBanner
         title="Hello World"
         description="This is my description"
